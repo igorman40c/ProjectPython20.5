@@ -115,3 +115,34 @@ def add_operation():
         error = str(e)
         return jsonify({'error': error}), 500
 
+
+# Федоренок Е. - реализация функции обновления (замены) характеристик операции с расходниками в базе данных
+@app.route('/update_operation/<int:id>', methods=['PUT'])
+def update_operation(id):
+    try:
+        operation = Operation.query.get(id)
+        if not operation:
+            return jsonify({'error': 'Operation cannot be found'}), 404
+        consume = request.json['consume']
+        start_volume = request.json['start_volume']
+        unit_measure = request.json['unit_measure']
+        name_employee = request.json['name_employee']
+        position_employee = request.json['position_employee']
+        num_taken = request.json['num_taken']
+        reason = request.json['reason']
+        fin_volume = request.json['fin_volume']
+        date_volume = request.json['date_volume']
+        operation.consume = consume
+        operation.start_volume = start_volume
+        operation.unit_measure = unit_measure
+        operation.name_employee = name_employee
+        operation.position_employee = position_employee
+        operation.num_taken = num_taken
+        operation.reason = reason
+        operation.fin_volume = fin_volume
+        operation.date_volume = date_volume
+        db.session.commit()
+        return jsonify({'message': 'Operation updated successfully'})
+    except exc.SQLAlchemyError as e:
+        error = str(e)
+        return jsonify({'error': error}), 500
