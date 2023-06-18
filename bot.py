@@ -201,3 +201,236 @@ async def handle_get_volume_consumables(update, context):
             chat_id=update.message.chat.id, text="Error, maybe database is empty", reply_markup=markup1
         )
         return SECOND_CHOOSE
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    # Пермякова Ю. - реализация функции сохранения даты совершения операции с расходником и добавления новой
+# операции с расходниками в базе данных, где отдельно присваивается значение каждому ее признаку
+async def handle_add_operation(update, context):
+    date_volume = update.message.text
+    args.append(date_volume)
+    (consume, start_value, unit_measure, name_employee, position_employee,
+     num_taken, reason, fin_value, data_val) = args
+    if add_operation(
+            consume, start_value, unit_measure, name_employee, position_employee,
+            num_taken, reason, fin_value, data_val):
+        await context.bot.send_message(
+            chat_id=update.message.chat.id, text="Operation added successfully, result was received! "
+                                                 "What else do you want to do?", reply_markup=markup1
+        )
+        args.clear()
+        return SECOND_CHOOSE
+    else:
+        await context.bot.send_message(chat_id=update.message.chat.id, text="Error", reply_markup=markup1)
+        args.clear()
+        return SECOND_CHOOSE
+
