@@ -60,7 +60,16 @@ def get_volume_consumables():
                           f"{operation['fin_volume']}, {operation['date_volume']}" for operation in operations])
 
 
-
+# Уразаев А. - реализация функции добавления новой операции с расходниками в базе данных,
+# # где отдельно присваивается значение каждому ее признаку
+def add_operation(
+        consume, start_volume, unit_measure, name_employee,
+        position_employee, num_taken, reason, fin_volume, date_volume):
+    response = requests.post(f"{API_URL}/add_operation", json={
+        'consume': consume, 'start_volume': start_volume, 'unit_measure': unit_measure,
+        'name_employee': name_employee, 'position_employee': position_employee, 'num_taken': num_taken,
+        'reason': reason, 'fin_volume': fin_volume, 'date_volume': date_volume})
+    return response
 
 
 
