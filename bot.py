@@ -37,6 +37,29 @@ markup1 = ReplyKeyboardMarkup(reply_keyboard1, one_time_keyboard=True)
 args = []
 
 
+# Уразаев А. - реализация функции вывода для пользователя всех операций с расходниками, имеющихся в базе данных
+def all_operations():
+    response = requests.get(f"{API_URL}/all_operations", timeout=7)
+    if response:
+        operations = response.json()
+        return "\n".join([f"{operation['id']}, {operation['consume']}, "
+                          f"{operation['start_volume']}, {operation['unit_measure']}, "
+                          f"{operation['name_employee']}, {operation['position_employee']}, "
+                          f"{operation['num_taken']}, {operation['reason']}, "
+                          f"{operation['fin_volume']}, {operation['date_volume']}" for operation in operations])
+
+
+# Уразаев А. - реализация функции получения всех операций с расходниками в базе данных по определенным категориям:
+# # название расходника, единица его измерения, остаток на дату и сама дата
+def get_volume_consumables():
+    url = f"{API_URL}/get_volume_consumables"
+    response = requests.get(url, timeout=7)
+    if response:
+        operations = response.json()
+        return "\n".join([f"{operation['consume']}, {operation['unit_measure']}, "
+                          f"{operation['fin_volume']}, {operation['date_volume']}" for operation in operations])
+
+
 
 
 
