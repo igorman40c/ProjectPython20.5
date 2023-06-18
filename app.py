@@ -42,3 +42,28 @@ class Operation(db.Model):
 with app.app_context():
     db.create_all()
 
+# Уразаев А. - реализация функции вывода для пользователя всех операций с расходниками, имеющихся в базе данных
+@app.route('/all_operations')
+def all_operations():
+    try:
+        operations = Operation.query.order_by(desc(Operation.date_volume)).all()
+        result = []
+        for operation in operations:
+            data = {
+                'id': operation.id,
+                'consume': operation.consume,
+                'start_volume': operation.start_volume,
+                'unit_measure': operation.unit_measure,
+                'name_employee': operation.name_employee,
+                'position_employee': operation.position_employee,
+                'num_taken': operation.num_taken,
+                'reason': operation.reason,
+                'fin_volume': operation.fin_volume,
+                'date_volume': operation.date_volume
+            }
+            result.append(data)
+        return jsonify(result)
+    except exc.SQLAlchemyError as e:
+        error = str(e)
+        return jsonify({'error': error}), 500
+
