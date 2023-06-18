@@ -281,6 +281,92 @@ async def handle_get_volume_consumables(update, context):
     
     
     
+# Уразаев А. - реализация функции записи в чат имени работника, взявшего расходник, и сохранения
+# единицы измерения (для обновления операции)
+async def in_fio_empl_oper(update, context):
+    unit_measure = update.message.text
+    args.append(unit_measure)
+    await context.bot.send_message(
+            chat_id=update.message.chat.id, text="Input name of employee for operation:"
+    )
+    return TYPING5
+
+
+# Уразаев А. - реализация функции записи в чат имени работника, взявшего расходник, и сохранения
+# единицы измерения (для добавления операции)
+async def in_fio_empl_oper_add(update, context):
+    unit_measure = update.message.text
+    args.append(unit_measure)
+    await context.bot.send_message(
+            chat_id=update.message.chat.id, text="Input name of employee for operation:"
+    )
+    return TYPING5A
+
+
+# Уразаев А. - реализация функции записи в чат должности работника, взявшего расходник, и сохранения
+# имени сотрудника (для обновления операции)
+async def in_pos_empl_oper(update, context):
+    name_employee = update.message.text
+    args.append(name_employee)
+    await context.bot.send_message(
+            chat_id=update.message.chat.id, text="Input position of employee for operation:"
+    )
+    return TYPING6
+
+
+# Уразаев А. - реализация функции записи в чат должности работника, взявшего расходник, и сохранения
+# имени сотрудника (для добавления операции)
+async def in_pos_empl_oper_add(update, context):
+    name_employee = update.message.text
+    args.append(name_employee)
+    await context.bot.send_message(
+            chat_id=update.message.chat.id, text="Input position of employee for operation:"
+    )
+    return TYPING6A
+
+
+# Уразаев А. - реализация функции записи в чат объема расходника, взятого работником, и сохранения
+# должности сотрудника (для обновления операции)
+async def in_n_taken_oper(update, context):
+    position_employee = update.message.text
+    args.append(position_employee)
+    await context.bot.send_message(
+            chat_id=update.message.chat.id, text="Input taken volume of consumable of operation:"
+    )
+    return TYPING7
+
+
+# Уразаев А. - реализация функции записи в чат объема расходника, взятого работником, и сохранения
+# должности сотрудника (для добавления операции)
+async def in_n_taken_oper_add(update, context):
+    position_employee = update.message.text
+    args.append(position_employee)
+    await context.bot.send_message(
+            chat_id=update.message.chat.id, text="Input taken volume of consumable of operation:"
+    )
+    return TYPING7A
+
+
+# Уразаев А. - реализация функции записи в чат причины взятия расходника и сохранения
+# выбывшего объема расходника (для обновления операции)
+async def in_reas_oper(update, context):
+    num_taken = update.message.text
+    args.append(int(num_taken))
+    await context.bot.send_message(
+            chat_id=update.message.chat.id, text="Input reason of operation:"
+    )
+    return TYPING8
+
+
+# Уразаев А. - реализация функции записи в чат причины взятия расходника и сохранения
+# выбывшего объема расходника (для добавления операции)
+async def in_reas_oper_add(update, context):
+    num_taken = update.message.text
+    args.append(int(num_taken))
+    await context.bot.send_message(
+            chat_id=update.message.chat.id, text="Input reason of operation:"
+    )
+    return TYPING8A
     
     
     
