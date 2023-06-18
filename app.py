@@ -67,3 +67,51 @@ def all_operations():
         error = str(e)
         return jsonify({'error': error}), 500
 
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      # Пермякова Ю. - реализация функции добавления новой операции с расходниками в базе данных,
+# где отдельно присваивается значение каждому ее признаку
+@app.route('/add_operation', methods=['POST'])
+def add_operation():
+    try:
+        consume = request.json['consume']
+        start_volume = request.json['start_volume']
+        unit_measure = request.json['unit_measure']
+        name_employee = request.json['name_employee']
+        position_employee = request.json['position_employee']
+        num_taken = request.json['num_taken']
+        reason = request.json['reason']
+        fin_volume = request.json['fin_volume']
+        date_volume = request.json['date_volume']
+        operation = Operation(
+            consume=consume, start_volume=start_volume, unit_measure=unit_measure,
+            name_employee=name_employee, position_employee=position_employee,
+            num_taken=num_taken, reason=reason, fin_volume=fin_volume, date_volume=date_volume)
+        db.session.add(operation)
+        db.session.commit()
+        return jsonify({'message': 'Operation added successfully'})
+    except exc.SQLAlchemyError as e:
+        error = str(e)
+        return jsonify({'error': error}), 500
+
