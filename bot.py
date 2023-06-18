@@ -72,7 +72,75 @@ args = []
 
 
 
+# Федоренок Е. - реализация функции обновления (замены) характеристик операции с расходниками в базе данных
+def update_operation(
+        id, consume=None, start_volume=None, unit_measure=None,
+        name_employee=None, position_employee=None, num_taken=None,
+        reason=None, fin_volume=None, date_volume=None):
+    url = f"{API_URL}/update_operation/{id}"
+    data = {}
+    if consume:
+        data['consume'] = consume
+    if start_volume:
+        data['start_volume'] = start_volume
+    if unit_measure:
+        data['unit_measure'] = unit_measure
+    if name_employee:
+        data['name_employee'] = name_employee
+    if position_employee:
+        data['position_employee'] = position_employee
+    if num_taken:
+        data['num_taken'] = num_taken
+    if reason:
+        data['reason'] = reason
+    if fin_volume:
+        data['fin_volume'] = fin_volume
+    if date_volume:
+        data['date_volume'] = date_volume
+    response = requests.put(url, json=data)
+    return response
 
+
+# Федоренок Е. - реализация функции удаления операции с расходниками в базе данных, а также условие запуска сервиса
+def delete_operation(id):
+    url = f"{API_URL}/delete_operation/{id}"
+    response = requests.delete(url)
+    return response
+
+
+# Федоренок Е. - реализация функции начала работы с телеграмм-ботом
+async def start(update, context):
+    await context.bot.send_message(
+        chat_id=update.message.chat.id,
+        text="Hello! Welcome to service about operations with consumables. "
+             "You can open the service or read an instruction about functions of service", reply_markup=markup
+    )
+    return FIRST_CHOOSE
+
+
+# Федоренок Е. - реализация функции вызова инструкции работы с телеграмм-ботом
+async def helping(update, context):
+    await context.bot.send_message(
+        chat_id=update.message.chat.id, text="Functions of service:\n"
+        "1) See all operations with consumables - it allows to see all database: title of consumable; "
+        "its initial volume on date; unit of its measure; name of employee, who took the consumable; "
+        "position of employee; volume of consumable, taken by him; reason of employee's operation; "
+        "remaining volume of consumable on date; date of operation.\n"
+        "2) Get some info about consumables - it allows to see: title of consumable, unit of its measure, "
+        "remaining volume of consumable on date, date of operation.\n"
+        "3) Add operation with consumables - it allows to add operation with <name of consumable>, "
+        "<initial volume on date>, <unit of measure>, <name of employee>, "
+        "<position of employee>, <volume of taken consumables>, <reason of operation>, "
+        "<remaining volume on date>, <date of operation>, which you input.\n"
+        "4) Update operation with consumables - it allows to update details of operation with <id>, "
+        "<name of consumable>, <initial volume on date>, <unit of measure>, <name of employee>, "
+        "<position of employee>, <volume of taken consumables>, <reason of operation>, "
+        "<remaining volume on date>, <date of operation>, which you input.\n"
+        "5) Delete operation with consumables - it allows to delete operation with <id>, which you input.\n"
+        "If you want to continue working wih service, then you should activate button 'Open service' again.",
+        reply_markup=markup
+    )
+    return FIRST_CHOOSE
 
 
 
@@ -301,7 +369,49 @@ async def handle_get_volume_consumables(update, context):
     
     
     
-    
+# Федоренко Е. - реализация функции записи в чат остатка расходника на дату и сохранения
+# причины взятия расходника (для обновления операции)
+async def in_fin_vol_oper(update, context):
+    reason = update.message.text
+    args.append(reason)
+    await context.bot.send_message(
+            chat_id=update.message.chat.id, text="Input remaining volume of consumable on date:"
+    )
+    return TYPING9
+
+
+# Федоренко Е. - реализация функции записи в чат остатка расходника на дату и сохранения
+# причины взятия расходника (для добавления операции)
+async def in_fin_vol_oper_add(update, context):
+    reason = update.message.text
+    args.append(reason)
+    await context.bot.send_message(
+            chat_id=update.message.chat.id, text="Input remaining volume of consumable on date:"
+    )
+    return TYPING9A
+
+
+# Федоренко Е. - реализация функции записи в чат даты совершения операции с расходником и сохранения
+# остатка расходника на дату (для обновления операции)
+async def in_dt_vol_oper(update, context):
+    fin_volume = update.message.text
+    args.append(int(fin_volume))
+    await context.bot.send_message(
+            chat_id=update.message.chat.id, text="Input date of operation:"
+    )
+    return OUTPUT1
+
+
+# Федоренко Е. - реализация функции записи в чат даты совершения операции с расходником и сохранения
+# остатка расходника на дату (для добавления операции)
+async def in_dt_vol_oper_add(update, context):
+    fin_volume = update.message.text
+    args.append(int(fin_volume))
+    await context.bot.send_message(
+            chat_id=update.message.chat.id, text="Input date of operation:"
+    )
+    return OUTPUT2
+
     
     
     
