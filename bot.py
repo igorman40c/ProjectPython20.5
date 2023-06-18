@@ -368,93 +368,7 @@ async def in_reas_oper_add(update, context):
     )
     return TYPING8A
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+  
 # Федоренок Е. - реализация функции записи в чат остатка расходника на дату и сохранения
 # причины взятия расходника (для обновления операции)
 async def in_fin_vol_oper(update, context):
@@ -543,7 +457,23 @@ async def handle_add_operation(update, context):
     
     
     
-    
+# Уразаев А. - реализация функции сохранения индекса операции с расходником и удаления операции
+# с расходниками в базе данных
+async def handle_delete_operation(update, context):
+    num = update.message.text
+    args.append(int(num))
+    id = args[0]
+    if delete_operation(id):
+        await context.bot.send_message(
+            chat_id=update.message.chat.id, text="Operation deleted successfully, result was received! "
+                                                 "What else do you want to do?", reply_markup=markup1
+        )
+        args.clear()
+        return SECOND_CHOOSE
+    else:
+        await context.bot.send_message(chat_id=update.message.chat.id, text="Error", reply_markup=markup1)
+        args.clear()
+        return SECOND_CHOOSE    
     
     
     
