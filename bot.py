@@ -1,19 +1,19 @@
+# Рязанов И. - импорт необходимых библиотек для работы с телеграмм-ботом, объявление доступа к телеграмм-боту и сервису
+import os
+import logging
+import requests
+from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove
+from telegram.ext import ApplicationBuilder, CommandHandler, ConversationHandler, MessageHandler, filters
 
 
+TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
+API_URL = os.getenv('API_URL')
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+logging.basicConfig(
+    format='%(asctime)s - %(name)s - %(message)s',
+    level=logging.INFO
+)
 
 # Мурзин И. - объявление состояний разговора для бота и создание 2-х кнопочных клавиатур
 (FIRST_CHOOSE, SECOND_CHOOSE, TYPING1, TYPING2, TYPING2A, TYPING3, TYPING3A, TYPING4, TYPING4A, TYPING5, TYPING5A,
@@ -203,82 +203,82 @@ async def handle_get_volume_consumables(update, context):
         return SECOND_CHOOSE
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    # Рязанов И. - реализация функции записи в чат индекса операции (для обновления операции)
+async def in_id_oper(update, context):
+    await context.bot.send_message(
+            chat_id=update.message.chat.id, text="Input id of operation:"
+    )
+    return TYPING1
+
+
+# Рязанов И. - реализация функции записи в чат индекса операции (для удаления операции)
+async def in_id_oper_del(update, context):
+    await context.bot.send_message(
+            chat_id=update.message.chat.id, text="Input id of operation:"
+    )
+    return OUTPUT3
+
+
+# Рязанов И. - реализация функции записи в чат названия расходника и сохранения индекса (для обновления операции)
+async def in_cons_oper(update, context):
+    id = update.message.text
+    args.append(int(id))
+    await context.bot.send_message(
+            chat_id=update.message.chat.id, text="Input name of consumable:"
+    )
+    return TYPING2
+
+
+# Рязанов И. - реализация функции записи в чат названия расходника (для добавления операции)
+async def in_cons_oper_add(update, context):
+    await context.bot.send_message(
+            chat_id=update.message.chat.id, text="Input name of consumable:"
+    )
+    return TYPING2A
+
+
+# Рязанов И. - реализация функции записи в чат начального объема расходника на дату и
+# сохранения названия (для обновления операции)
+async def in_fst_vol_oper(update, context):
+    consume = update.message.text
+    args.append(consume)
+    await context.bot.send_message(
+            chat_id=update.message.chat.id, text="Input initial volume of consumable on date:"
+    )
+    return TYPING3
+
+
+# Рязанов И. - реализация функции записи в чат начального объема расходника на дату и
+# сохранения названия (для добавления операции)
+async def in_fst_vol_oper_add(update, context):
+    consume = update.message.text
+    args.append(consume)
+    await context.bot.send_message(
+            chat_id=update.message.chat.id, text="Input initial volume of consumable on date:"
+    )
+    return TYPING3A
+
+
+# Рязанов И. - реализация функции записи в чат единицы измерения расходника и сохранения
+# начального объема (для обновления операции)
+async def in_meas_oper(update, context):
+    start_value = update.message.text
+    args.append(int(start_value))
+    await context.bot.send_message(
+            chat_id=update.message.chat.id, text="Input unit of measure for consumable:"
+    )
+    return TYPING4
+
+
+# Рязанов И. - реализация функции записи в чат единицы измерения расходника и сохранения
+# начального объема (для добавления операции)
+async def in_meas_oper_add(update, context):
+    start_value = update.message.text
+    args.append(int(start_value))
+    await context.bot.send_message(
+            chat_id=update.message.chat.id, text="Input unit of measure for consumable:"
+    )
+    return TYPING4A
     
     
 # Уразаев А. - реализация функции записи в чат имени работника, взявшего расходник, и сохранения
@@ -435,26 +435,26 @@ async def handle_add_operation(update, context):
         return SECOND_CHOOSE
 
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+# Рязанов И. - реализация функции сохранения даты совершения операции с расходником и обновления
+# (замены) характеристик операции с расходниками в базе данных
+async def handle_update_operation(update, context):
+    date_volume = update.message.text
+    args.append(date_volume)
+    (id, consume, start_value, unit_measure, name_employee, position_employee,
+     num_taken, reason, fin_value, data_val) = args
+    if update_operation(
+            id, consume, start_value, unit_measure, name_employee, position_employee,
+            num_taken, reason, fin_value, data_val):
+        await context.bot.send_message(
+            chat_id=update.message.chat.id, text="Operation updated successfully, result was received! "
+                                                 "What else do you want to do?", reply_markup=markup1
+        )
+        args.clear()
+        return SECOND_CHOOSE
+    else:
+        await context.bot.send_message(chat_id=update.message.chat.id, text="Error", reply_markup=markup1)
+        args.clear()
+        return SECOND_CHOOSE
     
     
 # Уразаев А. - реализация функции сохранения индекса операции с расходником и удаления операции
