@@ -69,25 +69,25 @@ def all_operations():
         return jsonify({'error': error}), 500
 
       
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
+      # Рязанов И. - реализация функции получения всех операций с расходниками в базе данных по определенным категориям:
+# название расходника, единица его измерения, остаток на дату и сама дата
+@app.route('/get_volume_consumables')
+def get_volume_consumables():
+    try:
+        operations = Operation.query.order_by(Operation.consume, desc(Operation.date_volume)).all()
+        result = []
+        for operation in operations:
+            data = {
+                'consume': operation.consume,
+                'unit_measure': operation.unit_measure,
+                'fin_volume': operation.fin_volume,
+                'date_volume': operation.date_volume
+            }
+            result.append(data)
+        return jsonify(result)
+    except exc.SQLAlchemyError as e:
+        error = str(e)
+        return jsonify({'error': error}), 500 
       
       
 # Пермякова Ю. - реализация функции добавления новой операции с расходниками в базе данных,
